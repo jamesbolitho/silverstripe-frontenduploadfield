@@ -1,8 +1,8 @@
 {
     "name": "jamesbolitho/silverstripe-frontenduploadfield",
     "description": "Frontend UploadField for SilverStripe 4 with Dropzone.js",
-    "type": "silverstripe-vendormodule",
 	"keywords": ["silverstripe", "upload", "frontend upload", "dropzone"],
+    "type": "silverstripe-vendormodule",
     "license": "MIT",
     "require": {
 		"silverstripe/vendor-plugin": "^1.0",
@@ -16,7 +16,7 @@
     },
 	"autoload": {
         "psr-4": {
-            "jamesbolitho\\silverstripe-frontenduploadfield\\": "src/"
+            "jamesbolitho\\frontenduploadfield\\": "src/"
         }
 	}
 }
