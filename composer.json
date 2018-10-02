@@ -18,5 +18,7 @@
         "psr-4": {
             "jamesbolitho\\frontenduploadfield\\": "src/"
         }
-	}
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true
 }
