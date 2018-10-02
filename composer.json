@@ -4,12 +4,6 @@
     "type": "silverstripe-vendormodule",
 	"keywords": ["silverstripe", "upload", "frontend upload", "dropzone"],
     "license": "MIT",
-    "authors": [
-        {
-            "name": "James Bolitho",
-            "email": "james@inceptiondesign.co.uk"
-        }
-    ],
     "require": {
 		"silverstripe/vendor-plugin": "^1.0",
         "silverstripe/framework": "^4.1"
