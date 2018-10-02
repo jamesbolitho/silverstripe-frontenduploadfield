@@ -29,6 +29,10 @@ $color-White: #FFFFFF;
                 @include transition(color .5s ease-in-out, background-color .5s ease-in-out);
                 cursor: pointer
             }
+			a:hover{    
+                color:$color-Black;
+                background-color:$color-LightGrey;
+            }
         }
         span:hover {
             border-color: $color-Grey
