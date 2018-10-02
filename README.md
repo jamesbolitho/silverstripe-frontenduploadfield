@@ -2,6 +2,11 @@
 
 Frontend UploadField for SilverStripe 4 with Dropzone.js.
 
-# ToDo's:
+## Installation
 
-More config options to be added and tested.
+    composer require jamesbolitho/silverstripe-frontenduploadfield
+
+
+## ToDo's:
+
+Add config options to be added and tested.
