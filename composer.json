@@ -10,8 +10,7 @@
     },
     "extra": {
         "expose": [
-            "resources/javascript",
-            "resources/css"
+            "resources"
         ]
     },
 	"autoload": {
