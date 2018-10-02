@@ -69,7 +69,7 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 				uploadedFiles = ".$files.";
 			
 			if(multipleUpload == 1){
-				var maxFilesAllowed = numberAllowed;
+				if(numberAllowed) var maxFilesAllowed = numberAllowed;
 			} else {
 				var maxFilesAllowed = '1';
 			}
@@ -79,7 +79,7 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 			config['params'] = {SecurityID: token};
 			config['url'] = fileurl;
 			if(maxFileSize) config['maxFilesize'] = maxFileSize;
-			if(numberAllowed) config['maxFiles'] = numberAllowed;
+			if(numberAllowed) var maxFilesAllowed = numberAllowed;
 			if(allowedFileTypes) config['acceptedFiles'] = allowedFileTypes;
 			config['clickable'] = '#' + name + '-dropzone .droparea a';
 			config['success'] = function(file, response){
