@@ -79,7 +79,7 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 			config['params'] = {SecurityID: token};
 			config['url'] = fileurl;
 			if(maxFileSize) config['maxFilesize'] = maxFileSize;
-			if(numberAllowed) var maxFilesAllowed = numberAllowed;
+			if(maxFilesAllowed) config['maxFiles'] = maxFilesAllowed;
 			if(allowedFileTypes) config['acceptedFiles'] = allowedFileTypes;
 			config['clickable'] = '#' + name + '-dropzone .droparea a';
 			config['success'] = function(file, response){
