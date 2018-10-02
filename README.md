@@ -42,4 +42,4 @@ Set allowed number of files to upload:
 
 ## ToDo's:
 
-- Only been tested with images so needs further development with files
+- Only been tested with images so needs further development and testing with files.
