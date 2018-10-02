@@ -1,0 +1,45 @@
+// ---------- FUNCTION DEPENDENCIES
+@function _calcRU($px, $base, $unit) {
+	$unit: quote($unit);
+
+	@if not $unit == "em" or not $unit == "rem" or not $unit == "%" {
+		@debug "Invalid unit, choose 'em' or 'rem'";
+		@return null;
+	}
+
+	@if not unitless($px) {
+		$px: strip-units($px);
+	}
+
+	@if not unitless($base) {
+		$base: strip-units($base);
+	}
+
+	@if($unit == "%") {
+		@return percentage($px / $base);
+	}
+
+	@return ($px / $base) * 1#{$unit};
+}
+
+// addresses https://github.com/nex3/sass/issues/533
+// number strip-units ( number $number )
+@function strip-units($number) {
+	@return $number / ($number * 0 + 1);
+}
+
+// to determine the unit. If it's a percentage, then our equation changes.
+// number em ( number $px, [ number $base: $base-font-size ] )
+@function em($px, $base: $base-font-size) {
+	@return _calcRU($px, $base, "em");
+}
+
+// number rem ( number $px, [ number $base: $base-font-size ] )
+@function rem($px, $base: $base-font-size) {
+	@return _calcRU($px, $base, "rem");
+}
+
+// number percent ( number $px, [ number $base: $base-font-size ] )
+@function percent($px, $base: $base-font-size) {
+	@return _calcRU($px, $base, "%");
+}

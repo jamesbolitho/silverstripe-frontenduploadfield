@@ -1,0 +1,60 @@
+@import "plugins/_loader";
+
+// Default Colours
+$color-Black: #000000;
+$color-DarkGrey: #333;
+$color-Grey: #CCCCCC;
+$color-LightGrey: #cbcbcb;
+$color-White: #FFFFFF;
+
+// Dropzone uploader styles
+.dropzone {
+    padding: 0;
+    border: 1px solid $color-LightGrey;
+    min-height: auto;
+    .droparea {
+        width: 100%;
+        padding: 20px;
+        span {
+            text-align: center;
+            display: block;
+            padding: 20px;
+            border: 2px dashed $color-LightGrey;
+            background-color: $color-White;
+            @include border-radius(0px);
+            @include transition(all .2s ease-out);
+            a {
+                color:$color-White;
+				background-color:$color-DarkGrey;
+                @include transition(color .5s ease-in-out, background-color .5s ease-in-out);
+                cursor: pointer
+            }
+        }
+        span:hover {
+            border-color: $color-Grey
+        }
+    }
+    .dz-preview.dz-file-preview,
+    .dz-preview{
+        .dz-image {
+            border-radius: 0px;
+        }
+    }
+    .dz-preview{
+        .dz-image {
+            border: 1px solid $color-LightGrey;
+        }
+    }
+    .dz-previews-container {
+        margin: 0 -16px
+    }
+    .dz-preview.dz-error .dz-image {
+        border-color: red
+    }
+    .dz-complete .dz-image img {
+        background: transparent
+    }
+    .dz-preview.dz-error .dz-image {
+        border-color: red
+    }
+}
