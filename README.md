@@ -13,9 +13,15 @@ To use this field use:
 
 	use jamesbolitho\frontenduploadfield\UploadField;
 
+
 Create your field as normal in your form:
 
 	$upload1 = UploadField::create('Images', 'Images');
+
+
+Set upload folder:
+
+	$upload1->setFolderName("Uploads/my-upload-folder/");
 
 
 Set allowed file types:
@@ -42,4 +48,4 @@ Set allowed number of files to upload:
 
 ## ToDo's:
 
-- Only been tested with images so needs further development and testing with files.
+- Only been tested with images so needs further development and testing with files i.e. pdf's, docx etc.
