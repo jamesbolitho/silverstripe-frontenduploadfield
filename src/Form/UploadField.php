@@ -54,7 +54,7 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 		$data = Controller::curr()->getRequest()->getSession()->get("FormData.{$this->getForm()->Name}.data");
 		$files = "''";
 		if(isset($data[$this->name]['Files'])){
-		  	$files = $this->uploadedFiles($data['Images']['Files']);
+		  	$files = $this->uploadedFiles($data[$this->name]['Files']);
 	  	}
 		
 		Requirements::customScript("
