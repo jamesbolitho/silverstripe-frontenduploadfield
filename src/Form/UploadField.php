@@ -16,9 +16,6 @@ use SilverStripe\Control\Controller;
 use SilverStripe\Assets\Folder;
 use SilverStripe\Assets\File;
 
-use SilverStripe\Dev\Debug;
-use SilverStripe\Dev\Backtrace;
-
 class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 {
     private static $allowed_actions = [
@@ -174,9 +171,7 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
     public function getAttributes()
     {
         $attributes = parent::getAttributes();
-
         unset($attributes['type']);
-
         return $attributes;
     }
 	
@@ -187,13 +182,11 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
      */
     public function getAllowedMaxFileSize()
     {
-      $size = $this->getValidator()->getAllowedMaxFileSize();
-	  //Debug::show($size / 1024 / 1024);
-		
-	  if($size){
-		  $sizeMB = $size / 1024 / 1024;
-		  return $sizeMB;
-	  }
+		$size = $this->getValidator()->getAllowedMaxFileSize();
+		if($size){
+			$sizeMB = $size / 1024 / 1024;
+			return $sizeMB;
+		}
     }
 	
 	/**
