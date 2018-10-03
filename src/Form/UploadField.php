@@ -43,13 +43,11 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 	*/
     public function Field($properties = array())
     {
-        
-		$field = parent::Field($properties);
+        $field = parent::Field($properties);
         Requirements::javascript('jamesbolitho/silverstripe-frontenduploadfield: resources/javascript/dropzone.js');
         Requirements::css('jamesbolitho/silverstripe-frontenduploadfield: resources/css/dropzone.css');
         Requirements::css('jamesbolitho/silverstripe-frontenduploadfield: resources/css/custom.css');
-		
-		
+	
 		//Check to see if data exists for this field in relation to uploaded files...
 		$data = Controller::curr()->getRequest()->getSession()->get("FormData.{$this->getForm()->Name}.data");
 		$files = "''";
