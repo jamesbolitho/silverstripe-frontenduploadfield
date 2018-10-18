@@ -52,7 +52,10 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 		  	$files = $this->uploadedFiles($data[$this->name]['Files']);
 	  	}
 		
-		Requirements::customScript("
+	Requirements::customScript("
+		jQuery.noConflict();
+
+		(function($) {
 			Dropzone.autoDiscover = false;
 			var name = '" . $this->name . "';
 				multipleUpload = '". $this->IsMultiUpload ."';
@@ -105,7 +108,9 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 			function addFileFieldID(ID){
 				$('.dropzone .placeholder').append('<input type=\"hidden\" name=\"' + name + '[Files][]\" value=\"' + ID + '\" />');
 			}
+		}(jQuery));
 		");
+		
 		
         return $field;
     }
