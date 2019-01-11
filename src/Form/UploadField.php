@@ -21,45 +21,46 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
     private static $allowed_actions = [
         'upload',
     ];
-	
-	public static $allowedMaxFileSize;
+    
+    public static $allowedMaxFileSize;
 
-	/**
-	 * Set the timeout (in milliseconds) allowed by dropzone
-	 * (defaults to Dropzone default of 30 seconds).
-	 * 
-	 * @var int
-	 */
-	protected $timeout = 30000;
+    /**
+     * Set the timeout (in milliseconds) allowed by dropzone
+     * (defaults to Dropzone default of 30 seconds).
+     * 
+     * @var int
+     */
+    protected $timeout = 30000;
 
     public function __construct($name, $title = null, SS_List $items = null)
     {
         parent::__construct($name, $title, $items);
-	
+    
         $this->setAttribute('data-schema', '');
         $this->setAttribute('data-state', '');
         $this->setAttribute('name', $name);
     }
-	
-	/**
-	* @param array $properties
-	* @return string
-	*/
+    
+    /**
+     * @param array $properties
+     * @return string
+     */
     public function Field($properties = array())
     {
         $field = parent::Field($properties);
         Requirements::javascript('jamesbolitho/silverstripe-frontenduploadfield: resources/javascript/dropzone.js');
         Requirements::css('jamesbolitho/silverstripe-frontenduploadfield: resources/css/dropzone.css');
         Requirements::css('jamesbolitho/silverstripe-frontenduploadfield: resources/css/custom.css');
-	
-		//Check to see if data exists for this field in relation to uploaded files...
-		$data = Controller::curr()->getRequest()->getSession()->get("FormData.{$this->getForm()->Name}.data");
-		$files = "''";
-		if(isset($data[$this->name]['Files'])) {
-		  	$files = $this->uploadedFiles($data[$this->name]['Files']);
-		}
-		
-		Requirements::customScript("
+    
+        //Check to see if data exists for this field in relation to uploaded files...
+        $data = Controller::curr()->getRequest()->getSession()->get("FormData.{$this->getForm()->Name}.data");
+        $files = "''";
+        if(isset($data[$this->name]['Files'])) {
+            $files = $this->uploadedFiles($data[$this->name]['Files']);
+        }
+        
+        Requirements::customScript(
+            "
 		jQuery.noConflict();
 
 		(function($) {
@@ -118,11 +119,12 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 				$('.dropzone .placeholder').append('<input type=\"hidden\" name=\"' + name + '[Files][]\" value=\"' + ID + '\" />');
 			}
 		}(jQuery));
-		");
+		"
+        );
 
         return $field;
     }
-	
+    
     public function Type()
     {
         return "frontenduploadfield uploadfield";
@@ -130,7 +132,7 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 
     public function upload(HTTPRequest $request)
     {
-		if ($this->isDisabled() || $this->isReadonly()) {
+        if ($this->isDisabled() || $this->isReadonly()) {
             return $this->httpError(403);
         }
 
@@ -141,7 +143,9 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
         }
 
         $tmpFile = $request->postVar('file');
-        /** @var File $file */
+        /**
+ * @var File $file 
+*/
         $file = $this->saveTemporaryFile($tmpFile, $error);
 
         // Prepare result
@@ -167,42 +171,45 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
         return (new HTTPResponse(json_encode($result)))
             ->addHeader('Content-Type', 'application/json');
     }
-	
-	/* If files have already been uploaded we need to specify which files have been uploaded to ensure that people can not upload more than they are supposed to if limits are set */ 
-	public function uploadedFiles($ids = []){
-		if(empty($ids)) return false;
-		$files = [];
-		foreach($ids as $id) {
-			if($file = File::get()->byID((int) $id)) {
-				$size = $file->ini2bytes($file->getSize());				
-				$files[] = ["ID" => $file->ID,"Name" => $file->Name, 'URL' => $file->getAbsoluteURL(), 'Size' => $size];
-			}
-		}
-		return json_encode($files);
-	}	
-	
+    
+    /* If files have already been uploaded we need to specify which files have been uploaded to ensure that people can not upload more than they are supposed to if limits are set */ 
+    public function uploadedFiles($ids = [])
+    {
+        if(empty($ids)) { return false;
+        }
+        $files = [];
+        foreach($ids as $id) {
+            if($file = File::get()->byID((int) $id)) {
+                $size = $file->ini2bytes($file->getSize());                
+                $files[] = ["ID" => $file->ID,"Name" => $file->Name, 'URL' => $file->getAbsoluteURL(), 'Size' => $size];
+            }
+        }
+        return json_encode($files);
+    }    
+    
     public function getAttributes()
     {
         $attributes = parent::getAttributes();
         unset($attributes['type']);
         return $attributes;
     }
-	
-	/**
+    
+    /**
      * Sets the file size allowed for this field
-     * @param $count
+     *
+     * @param  $count
      * @return $this
      */
     public function getAllowedMaxFileSize()
     {
-		$size = $this->getValidator()->getAllowedMaxFileSize();
-		if($size){
-			$sizeMB = $size / 1024 / 1024;
-			return $sizeMB;
-		}
+        $size = $this->getValidator()->getAllowedMaxFileSize();
+        if($size) {
+            $sizeMB = $size / 1024 / 1024;
+            return $sizeMB;
+        }
     }
-	
-	/**
+    
+    /**
      * Returns a list of file extensions (and corresponding mime types) that will be accepted
      *
      * @return array
@@ -213,39 +220,39 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
         if (!$extensions) {
             return [];
         }
-		$extentionString = "";
-		$i = 0;
-		foreach ($extensions as $extension) {
-			if ($i == 0){
-				$extentionString .= ".{$extension}";
-			} else {
-				$extentionString .= ", .{$extension}";
-			}
-			$i++;
-		}
-		return $extentionString;
+        $extentionString = "";
+        $i = 0;
+        foreach ($extensions as $extension) {
+            if ($i == 0) {
+                $extentionString .= ".{$extension}";
+            } else {
+                $extentionString .= ", .{$extension}";
+            }
+            $i++;
+        }
+        return $extentionString;
     }
 
-	/**
-	 * Get set the timeout allowed by dropzone (defaults to null/Dropzone default)
-	 *
-	 * @return  int|null
-	 */ 
-	public function getTimeout()
-	{
-		return $this->timeout;
-	}
+    /**
+     * Get set the timeout allowed by dropzone (defaults to null/Dropzone default)
+     *
+     * @return int|null
+     */ 
+    public function getTimeout()
+    {
+        return $this->timeout;
+    }
 
-	/**
-	 * Set set the timeout allowed by dropzone (defaults to null/Dropzone default)
-	 *
-	 * @param  int  $timout  Set the timeout in seconds
-	 *
-	 * @return  self
-	 */ 
-	public function setTimeout(int $timeout)
-	{
-		$this->timeout = $timeout;
-		return $this;
-	}
+    /**
+     * Set set the timeout allowed by dropzone (defaults to null/Dropzone default)
+     *
+     * @param int $timout Set the timeout in seconds
+     *
+     * @return self
+     */ 
+    public function setTimeout(int $timeout)
+    {
+        $this->timeout = $timeout;
+        return $this;
+    }
 }
