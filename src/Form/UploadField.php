@@ -24,6 +24,14 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 	
 	public static $allowedMaxFileSize;
 
+	/**
+	 * Set the timeout (in milliseconds) allowed by dropzone
+	 * (defaults to Dropzone default of 30 seconds).
+	 * 
+	 * @var int
+	 */
+	protected $timeout = 30000;
+
     public function __construct($name, $title = null, SS_List $items = null)
     {
         parent::__construct($name, $title, $items);
@@ -31,7 +39,6 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
         $this->setAttribute('data-schema', '');
         $this->setAttribute('data-state', '');
         $this->setAttribute('name', $name);
-
     }
 	
 	/**
@@ -48,11 +55,11 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 		//Check to see if data exists for this field in relation to uploaded files...
 		$data = Controller::curr()->getRequest()->getSession()->get("FormData.{$this->getForm()->Name}.data");
 		$files = "''";
-		if(isset($data[$this->name]['Files'])){
+		if(isset($data[$this->name]['Files'])) {
 		  	$files = $this->uploadedFiles($data[$this->name]['Files']);
-	  	}
+		}
 		
-	Requirements::customScript("
+		Requirements::customScript("
 		jQuery.noConflict();
 
 		(function($) {
@@ -65,6 +72,7 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 				allowedFileTypes = '".$this->getAcceptFileTypes()."',
 				numberAllowed = '". $this->AllowedMaxFileNumber."',
 				uploadedFiles = ".$files.";
+				timeout = {$this->getTimeOut()};
 			
 			if(multipleUpload == 1){
 				if(numberAllowed) var maxFilesAllowed = numberAllowed;
@@ -76,6 +84,7 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 			config['previewsContainer'] = '.' + name + '-previews-container';
 			config['params'] = {SecurityID: token};
 			config['url'] = fileurl;
+			if(timeout) config['timeout'] = timeout;
 			if(maxFileSize) config['maxFilesize'] = maxFileSize;
 			if(maxFilesAllowed) config['maxFiles'] = maxFilesAllowed;
 			if(allowedFileTypes) config['acceptedFiles'] = allowedFileTypes;
@@ -110,8 +119,7 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 			}
 		}(jQuery));
 		");
-		
-		
+
         return $field;
     }
 	
@@ -217,4 +225,27 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 		}
 		return $extentionString;
     }
+
+	/**
+	 * Get set the timeout allowed by dropzone (defaults to null/Dropzone default)
+	 *
+	 * @return  int|null
+	 */ 
+	public function getTimeout()
+	{
+		return $this->timeout;
+	}
+
+	/**
+	 * Set set the timeout allowed by dropzone (defaults to null/Dropzone default)
+	 *
+	 * @param  int  $timout  Set the timeout in seconds
+	 *
+	 * @return  self
+	 */ 
+	public function setTimeout(int $timeout)
+	{
+		$this->timeout = $timeout;
+		return $this;
+	}
 }
