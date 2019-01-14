@@ -46,6 +46,12 @@ Set allowed number of files to upload:
 	$upload1->setAllowedMaxFileNumber(5);
 
 
+Set timeout for the XHR requests in milliseconds:
+
+	$upload1->setTimeout(30000);
+
+
 ## ToDo's:
 
+- Add ability to alter more Dropzone settings programmatically through silverstripe i.e. chunk sizing etc.
 - Only been tested with images so needs further development and testing with files i.e. pdf's, docx etc.

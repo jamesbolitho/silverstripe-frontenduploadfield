@@ -144,8 +144,8 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 
         $tmpFile = $request->postVar('file');
         /**
- * @var File $file 
-*/
+		 * @var File $file 
+		*/
         $file = $this->saveTemporaryFile($tmpFile, $error);
 
         // Prepare result
@@ -246,7 +246,7 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
     /**
      * Set set the timeout allowed by dropzone (defaults to null/Dropzone default)
      *
-     * @param int $timout Set the timeout in seconds
+     * @param int $timout Set the timeout in milliseconds
      *
      * @return self
      */ 
