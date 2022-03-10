@@ -12,6 +12,7 @@ use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Forms\FileField;
 use SilverStripe\View\Requirements;
 use SilverStripe\Control\Controller;
+use SilverStripe\Control\Director;
 
 use SilverStripe\Assets\Folder;
 use SilverStripe\Assets\File;
