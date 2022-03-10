@@ -11,7 +11,7 @@
 	"extra": {
 		"expose": [
 			"resources/css",
-			"resources/javascript"
+			"resources/images"
 		]
 	},
 	"autoload": {

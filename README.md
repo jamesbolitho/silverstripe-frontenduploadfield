@@ -1,6 +1,6 @@
 # Frontend Uploadfield
 
-Frontend UploadField for SilverStripe 4 with Dropzone.js.
+Frontend UploadField for SilverStripe 4 with Dropzone.js.  jQuery is also required to be included in your front end template.
 
 ## Installation
 
@@ -36,6 +36,13 @@ Set allowed max file size:
 	$upload1->getValidator()->setAllowedMaxFileSize($size);
 
 
+Set to allow files to be removed from upload field:
+
+	$upload1->setRemoveFiles(true);
+	
+*Please note that this also removes files from assets as well.*	
+	
+
 Set to allow multiple file upload:
 
 	$upload1->setIsMultiUpload(true);
@@ -54,4 +61,4 @@ Set timeout for the XHR requests in milliseconds:
 ## ToDo's:
 
 - Add ability to alter more Dropzone settings programmatically through silverstripe i.e. chunk sizing etc.
-- Only been tested with images so needs further development and testing with files i.e. pdf's, docx etc.
+- Add more icons for non image files e.g. pdf, word etc.

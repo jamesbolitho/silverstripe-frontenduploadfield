@@ -27,11 +27,14 @@ $color-White: #FFFFFF;
                 color:$color-White;
 				background-color:$color-DarkGrey;
                 @include transition(color .5s ease-in-out, background-color .5s ease-in-out);
-                cursor: pointer
+                cursor: pointer;
+				display: inline-block;
+				float: none;
             }
 			a:hover{    
                 color:$color-Black;
                 background-color:$color-LightGrey;
+				border-bottom: none;
             }
         }
         span:hover {
@@ -45,20 +48,37 @@ $color-White: #FFFFFF;
         }
     }
     .dz-preview{
+		position: relative;
+		margin: 15px;
         .dz-image {
             border: 1px solid $color-LightGrey;
+			width: auto;
+			height: auto;
+			img{
+				border: none;
+			}
         }
+		.btn-remove{
+			position: absolute;
+			bottom: -10px;
+			left: 0px;
+			z-index: 20;
+			width: 100%;
+		}
     }
     .dz-previews-container {
-        margin: 0 -16px
-    }
-    .dz-preview.dz-error .dz-image {
-        border-color: red
+        margin: 0;
     }
     .dz-complete .dz-image img {
         background: transparent
     }
-    .dz-preview.dz-error .dz-image {
+	.dz-preview.dz-error .dz-image {
         border-color: red
     }
+	.dz-preview .dz-error-message{
+		top:auto;
+		bottom: -80px;
+		left: 0;
+		width: 136px;
+	}
 }
