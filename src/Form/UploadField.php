@@ -16,6 +16,7 @@ use SilverStripe\Control\Director;
 
 use SilverStripe\Assets\Folder;
 use SilverStripe\Assets\File;
+use SilverStripe\ORM\SS_List;
 
 class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 {
