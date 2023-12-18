@@ -6,6 +6,7 @@ Frontend UploadField for SilverStripe 4 with Dropzone.js.  jQuery is also requir
 
     composer require jamesbolitho/silverstripe-frontenduploadfield
 
+	run /dev/build
 
 ## Field Configuation
 
@@ -40,7 +41,11 @@ Set to allow files to be removed from upload field:
 
 	$upload1->setRemoveFiles(true);
 	
-*Please note that this also removes files from assets as well.*	
+For this to work a key is generated and saved in the database for each file that is uploaded through front end upload field.  This is to provide a more secure way or identifying your files from front end forms. To remove this key after uploading you can add the following to your form submission processing function:
+
+	$file->removeFrontEndUploadKey();
+
+*Please note that this also removes files from assets as well.*
 	
 
 Set to allow multiple file upload:
@@ -60,5 +65,6 @@ Set timeout for the XHR requests in milliseconds:
 
 ## ToDo's:
 
-- Add ability to alter more Dropzone settings programmatically through silverstripe i.e. chunk sizing etc.
+- Add ability to alter more Dropzone settings programmatically through Silverstripe 
+- Add chunk upload.
 - Add more icons for non image files e.g. pdf, word etc.

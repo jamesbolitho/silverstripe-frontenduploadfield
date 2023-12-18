@@ -149,7 +149,7 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 			config['success'] = function(file, response){
                 addFileFieldID(response[0].id);
                 if (file.previewElement) {
-                    $(file.previewElement).attr('data-id', response[0].id);
+                    $(file.previewElement).attr('data-frontenduploadkey', response[0].frontenduploadkey);
                     return file.previewElement.classList.add('dz-success');
                 }		
 			};
@@ -175,7 +175,7 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
                    
 					window[name+'Dropzone'].emit('complete', File);
                     
-                    $(File.previewElement).attr('data-id', value.ID);
+                    $(File.previewElement).attr('data-frontenduploadkey', value.FrontEndUploadKey);
 					
                     var existingFileCount = 1; // The number of files already uploaded
 					window[name+'Dropzone'].options.maxFiles = window[name+'Dropzone'].options.maxFiles - existingFileCount;
@@ -224,16 +224,16 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
                   e.stopPropagation();
                   
                   // do the AJAX request here.
-				  var fileID = $(this).parent().data('id'),
-                  	  postData = {SecurityID: token, ID: fileID};
+				  var postData = {SecurityID: token, ID: $(this).parent().data('frontenduploadkey')};
                   $.ajax({
                         type: 'POST',
                         url: '". $removeFileURL ."',
                         data: postData,
                         success: function(data){
                             // Remove the file preview.
-                            _this.removeFile(file);
-							$('.dropzone.uploadfield-holder input[value='+ fileID +']').remove();
+                            if(data.Success){
+                                _this.removeFile(file);
+                            }
                         }
                     });
                   
@@ -272,34 +272,20 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
         // Prepare result
         if ($error) {
             $result = [
-                'message' => [
-                    'type' => 'error',
-                    'value' => $error,
-                ]
+                'error' => $error,
             ];
             $this->getUpload()->clearErrors();
             return (new HTTPResponse(json_encode($result), 400))
                 ->addHeader('Content-Type', 'application/json');
         }
 
-		// We need an ID for getObjectFromData
-        if (!$file->isInDB()) {
-            $file->write();
-        }
-		
+		//Create an identification key for files uploaded from front end to use in remove function later if required...
+        //Publish file to ensure it is accessible on front end...
+        $file->generateFrontEndUploadKey();
+
 		$uploadedFileObject = AssetAdmin::singleton()->getObjectFromData($file);
-		
-		/* File needs to be published so doing a check here and publishing the file if necessary...
-		*  Look into making this optional as could be an issue if you don't want files to be visible publicly...
-		*/
-		if($uploadedFileObject['published'] != true){
-			$file = File::get()->byID((int) $uploadedFileObject['id']);
-            if($file)
-            {
-                $file->publishSingle();
-			}
-		}
-		
+        $uploadedFileObject['frontenduploadkey'] = $file->FrontEndUploadKey;
+        
         // Return success response
         $result = [
 			$uploadedFileObject
@@ -322,7 +308,7 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
 			if($file = File::get()->byID((int) $id)) {
 				$size = $file->ini2bytes($file->getSize());
                 $ext = File::get_file_extension($file->Filename);
-				$files[] = ["ID" => $file->ID, "Name" => $file->Name, 'dataURL' => $file->getAbsoluteURL(), 'Size' => $size, 'Type' => $ext];
+				$files[] = ["ID" => $file->ID, "Name" => $file->Name, 'dataURL' => $file->getAbsoluteURL(), 'Size' => $size, 'Type' => $ext, 'FrontEndUploadKey' => $file->FrontEndUploadKey];
 			}
 		}
 		return json_encode($files);
@@ -346,7 +332,7 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
         
         if($id = $request->postVar('ID'))
         {
-            $file = File::get()->byID((int) $id);
+            $file = File::get()->filter(['FrontEndUploadKey' => $id])->First();
             if($file)
             {
                 $file->deleteFromStage('Live');

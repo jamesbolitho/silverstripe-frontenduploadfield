@@ -1,3 +1,6 @@
 ---
 name: frontenduploadfield
 ---
+SilverStripe\Assets\File:
+  extensions:
+    - jamesbolitho\frontenduploadfield\FrontendUploadFieldFileExtension
