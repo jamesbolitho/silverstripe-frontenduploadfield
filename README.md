@@ -41,12 +41,15 @@ Set to allow files to be removed from upload field:
 
 	$upload1->setRemoveFiles(true);
 	
-For this to work a key is generated and saved in the database for each file that is uploaded through front end upload field.  This is to provide a more secure way or identifying your files from front end forms. To remove this key after uploading you can add the following to your form submission processing function:
-
-	$file->removeFrontEndUploadKey();
-
 *Please note that this also removes files from assets as well.*
-	
+
+For this remove files function to work a key is generated and saved in the database for each file that is uploaded through the front end upload fields. This is to provide a more secure way of identifying your files from front end forms. To remove this key after uploading you can add the following to your form submission processing function:
+    
+	foreach($data["Images"]["Files"] as $id) {
+		if($file = File::get()->byID((int) $id)) {
+			$file->removeFrontEndUploadKey();
+		}
+	}
 
 Set to allow multiple file upload:
 

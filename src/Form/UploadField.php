@@ -90,10 +90,9 @@ class UploadField extends \SilverStripe\AssetAdmin\Forms\UploadField
         
 		$thumbsize = $this->getThumbSize();
 		$files = "''";
-		//if(isset($data[$this->name]['Files']))
+		
         if($this->getItemIDs())
 		{
-			//$files = $this->uploadedFiles($data[$this->name]['Files']);
 			$files = $this->uploadedFiles($this->getItemIDs());
 	  	}
 		
